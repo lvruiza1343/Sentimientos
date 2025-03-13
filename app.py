@@ -44,3 +44,10 @@ with st.expander('Corrección en inglés'):
        if text2:
           blob2=TextBlob(text2)
           st.write((blob2.correct())) 
+
+
+from streamlit_lottie import st_lottie
+import json
+with open('1741878051974.json') as source:
+animation=json.load(source)
+st. lottie (animation,width =350)
