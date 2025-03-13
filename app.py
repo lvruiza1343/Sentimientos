@@ -48,6 +48,6 @@ with st.expander('Corrección en inglés'):
 
 from streamlit_lottie import st_lottie
 import json
-with open('1741878051974.json') as source:
+with open('animation - 1741878051974.json') as source:
 animation=json.load(source)
 st. lottie (animation,width =350)
