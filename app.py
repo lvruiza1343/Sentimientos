@@ -73,6 +73,9 @@ with st.expander("📊 Analizar Polaridad y Subjetividad"):
             st.markdown('<div class="result negative">😔 Sentimiento Negativo</div>', unsafe_allow_html=True)
         else:
             st.markdown('<div class="result neutral">😐 Sentimiento Neutral</div>', unsafe_allow_html=True)
+        
+        if st.button("🔄 Reiniciar"):
+            st.experimental_rerun()
 
 # Corrección de texto en inglés
 with st.expander("✏️ Corrección en inglés"):
@@ -81,6 +84,15 @@ with st.expander("✏️ Corrección en inglés"):
         blob2 = TextBlob(text2)
         corrected_text = blob2.correct()
         st.markdown(f"**Texto corregido:** `{corrected_text}`")
+        
+        if st.button("🔄 Reiniciar", key='reset2'):
+            st.experimental_rerun()
+
+# Animación Lottie
+with open('Animation - 1741878051974.json') as source:
+    animation = json.load(source)
+st_lottie(animation, width=350)
+
 
 # Animación Lottie
 with open('Animation - 1741878051974.json') as source:
