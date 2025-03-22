@@ -3,50 +3,87 @@ from textblob import TextBlob
 from googletrans import Translator
 from streamlit_lottie import st_lottie
 import json
+
+# Configuración de la página
+st.set_page_config(page_title="Análisis de Sentimientos", page_icon="😊", layout="centered")
 translator = Translator()
-st.title('Uso de textblob')
 
-st.subheader("Por favor escribe en el campo de texto la frase que deseas analizar")
-with st.sidebar:
-               st.subheader("Polaridad y Subjetividad")
-               ("""
-                Polaridad: Indica si el sentimiento expresado en el texto es positivo, negativo o neutral. 
-                Su valor oscila entre -1 (muy negativo) y 1 (muy positivo), con 0 representando un sentimiento neutral.
-                
-               Subjetividad: Mide cuánto del contenido es subjetivo (opiniones, emociones, creencias) frente a objetivo
-               (hechos). Va de 0 a 1, donde 0 es completamente objetivo y 1 es completamente subjetivo.
+# Estilos personalizados
+st.markdown(
+    """
+    <style>
+    .title {
+        text-align: center;
+        color: #2E86C1;
+        font-size: 40px;
+        font-weight: bold;
+    }
+    .subheader {
+        color: #117864;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .result {
+        font-size: 18px;
+        font-weight: bold;
+        padding: 10px;
+        border-radius: 10px;
+        text-align: center;
+    }
+    .positive {
+        background-color: #D4EFDF;
+        color: #1D8348;
+    }
+    .negative {
+        background-color: #FADBD8;
+        color: #C0392B;
+    }
+    .neutral {
+        background-color: #D5DBDB;
+        color: #2C3E50;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-                 """
-               ) 
+# Título principal
+st.markdown('<div class="title">Análisis de Sentimientos</div>', unsafe_allow_html=True)
 
+# Sección de instrucciones
+st.subheader("📌 Escribe una frase para analizar su sentimiento")
 
-with st.expander('Analizar Polaridad y Subjetividad en un texto'):
-    text1 = st.text_area('Escribe por favor: ')
+# Análisis de polaridad y subjetividad
+with st.expander("📊 Analizar Polaridad y Subjetividad"):
+    text1 = st.text_area("✍️ Ingresa el texto aquí:")
     if text1:
-
         translation = translator.translate(text1, src="es", dest="en")
         trans_text = translation.text
         blob = TextBlob(trans_text)
-        #blob = TextBlob(text1)
-       
+        polarity = round(blob.sentiment.polarity, 2)
+        subjectivity = round(blob.sentiment.subjectivity, 2)
         
-        st.write('Polarity: ', round(blob.sentiment.polarity,2))
-        st.write('Subjectivity: ', round(blob.sentiment.subjectivity,2))
-        x=round(blob.sentiment.polarity,2)
-        if x >= 0.5:
-            st.write( 'Es un sentimiento Positivo 😊')
-        elif x <= -0.5:
-            st.write( 'Es un sentimiento Negativo 😔')
+        # Mostrar los resultados
+        st.markdown(f"**Polaridad:** `{polarity}`")
+        st.markdown(f"**Subjetividad:** `{subjectivity}`")
+        
+        if polarity >= 0.5:
+            st.markdown('<div class="result positive">😊 Sentimiento Positivo</div>', unsafe_allow_html=True)
+        elif polarity <= -0.5:
+            st.markdown('<div class="result negative">😔 Sentimiento Negativo</div>', unsafe_allow_html=True)
         else:
-            st.write( 'Es un sentimiento Neutral 😐')
+            st.markdown('<div class="result neutral">😐 Sentimiento Neutral</div>', unsafe_allow_html=True)
 
-with st.expander('Corrección en inglés'):
-       text2 = st.text_area('Escribe por favor: ',key='4')
-       if text2:
-          blob2=TextBlob(text2)
-          st.write((blob2.correct())) 
+# Corrección de texto en inglés
+with st.expander("✏️ Corrección en inglés"):
+    text2 = st.text_area("✍️ Ingresa el texto en inglés:", key='4')
+    if text2:
+        blob2 = TextBlob(text2)
+        corrected_text = blob2.correct()
+        st.markdown(f"**Texto corregido:** `{corrected_text}`")
 
-
+# Animación Lottie
 with open('Animation - 1741878051974.json') as source:
-  animation=json.load(source)
-st. lottie (animation,width =350)
+    animation = json.load(source)
+st_lottie(animation, width=350)
+
