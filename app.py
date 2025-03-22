@@ -53,9 +53,14 @@ st.markdown('<div class="title">Análisis de Sentimientos</div>', unsafe_allow_h
 # Sección de instrucciones
 st.subheader("📌 Escribe una frase para analizar su sentimiento")
 
+# Inicializar session_state para manejar reinicio
+def reset_text():
+    st.session_state.text1 = ""
+    st.session_state.text2 = ""
+
 # Análisis de polaridad y subjetividad
 with st.expander("📊 Analizar Polaridad y Subjetividad"):
-    text1 = st.text_area("✍️ Ingresa el texto aquí:")
+    text1 = st.text_area("✍️ Ingresa el texto aquí:", key="text1")
     if text1:
         translation = translator.translate(text1, src="es", dest="en")
         trans_text = translation.text
@@ -73,29 +78,22 @@ with st.expander("📊 Analizar Polaridad y Subjetividad"):
             st.markdown('<div class="result negative">😔 Sentimiento Negativo</div>', unsafe_allow_html=True)
         else:
             st.markdown('<div class="result neutral">😐 Sentimiento Neutral</div>', unsafe_allow_html=True)
-        
-        if st.button("🔄 Reiniciar"):
-            st.experimental_rerun()
+    
+    st.button("🔄 Reiniciar", on_click=reset_text)
 
 # Corrección de texto en inglés
 with st.expander("✏️ Corrección en inglés"):
-    text2 = st.text_area("✍️ Ingresa el texto en inglés:", key='4')
+    text2 = st.text_area("✍️ Ingresa el texto en inglés:", key="text2")
     if text2:
         blob2 = TextBlob(text2)
         corrected_text = blob2.correct()
         st.markdown(f"**Texto corregido:** `{corrected_text}`")
-        
-        if st.button("🔄 Reiniciar", key='reset2'):
-            st.experimental_rerun()
+    
+    st.button("🔄 Reiniciar", on_click=reset_text, key='reset2')
 
 # Animación Lottie
 with open('Animation - 1741878051974.json') as source:
     animation = json.load(source)
 st_lottie(animation, width=350)
 
-
-# Animación Lottie
-with open('Animation - 1741878051974.json') as source:
-    animation = json.load(source)
-st_lottie(animation, width=350)
 
