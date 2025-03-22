@@ -60,7 +60,7 @@ def reset_text():
 
 # Análisis de polaridad y subjetividad
 with st.expander("📊 Analizar Polaridad y Subjetividad"):
-    text1 = st.text_area("✍️ Ingresa el texto aquí:", key="text1")
+    text1 = st.text_input("✍️ Ingresa el texto aquí:", key="text1")
     if text1:
         translation = translator.translate(text1, src="es", dest="en")
         trans_text = translation.text
@@ -83,7 +83,7 @@ with st.expander("📊 Analizar Polaridad y Subjetividad"):
 
 # Corrección de texto en inglés
 with st.expander("✏️ Corrección en inglés"):
-    text2 = st.text_area("✍️ Ingresa el texto en inglés:", key="text2")
+    text2 = st.text_input("✍️ Ingresa el texto en inglés:", key="text2")
     if text2:
         blob2 = TextBlob(text2)
         corrected_text = blob2.correct()
@@ -95,5 +95,4 @@ with st.expander("✏️ Corrección en inglés"):
 with open('Animation - 1741878051974.json') as source:
     animation = json.load(source)
 st_lottie(animation, width=350)
-
 
